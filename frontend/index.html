@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Utilities Platform</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background: radial-gradient(circle at top, #0f172a, #020617);
+    }
+
+    /* Glow buttons */
+    .glow {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    .glow::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(
+        120deg,
+        #22d3ee,
+        #818cf8,
+        #c084fc,
+        #22d3ee
+      );
+      filter: blur(24px);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .glow:hover::before {
+      opacity: 1;
+    }
+
+    .glow span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Pixel click effect */
+    .pixel-click:active {
+      transform: scale(0.94);
+      filter: contrast(1.4) saturate(1.4);
+    }
+
+    /* Feature cards */
+    .feature-card {
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 25px 60px rgba(34, 211, 238, 0.15);
+      border-color: #22d3ee;
+    }
+
+    /* FAQ cards */
+    details {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    details:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(34, 211, 238, 0.12);
+      border-color: #22d3ee;
+    }
+
+    details[open] {
+      border-color: #22d3ee;
+      box-shadow: 0 25px 60px rgba(34, 211, 238, 0.18);
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+  </style>
+</head>
+
+<body class="text-white min-h-screen px-6">
+
+  <!-- HERO (FIRST THING USER SEES) -->
+  <section class="max-w-5xl mx-auto text-center pt-28 pb-24">
+    <h1 class="text-4xl md:text-5xl font-bold mb-6">
+      Security Utilities Platform
+    </h1>
+
+    <p class="text-lg text-zinc-300 mb-6">
+      A practical security toolkit for generating strong passwords, hashing
+      sensitive data, and evaluating password strength using real-world
+      cryptographic principles.
+    </p>
+
+    <p class="text-sm text-zinc-400">
+      Built to reflect how modern security tools are actually designed and used.
+    </p>
+  </section>
+
+  <!-- FEATURE OVERVIEW -->
+  <section class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mb-28">
+    <div class="feature-card bg-zinc-900/60 p-6 rounded-xl border border-zinc-800">
+      <h3 class="text-lg font-semibold mb-3">🔐 Password Generator</h3>
+      <p class="text-sm text-zinc-400">
+        Generate strong, random passwords with user-selected length up to
+        64 characters, eliminating predictable patterns and weak credentials.
+      </p>
+    </div>
+
+    <div class="feature-card bg-zinc-900/60 p-6 rounded-xl border border-zinc-800">
+      <h3 class="text-lg font-semibold mb-3">📊 Password Strength Analyzer</h3>
+      <p class="text-sm text-zinc-400">
+        Measure entropy and estimate real-world crack times to understand how
+        resistant a password is against brute-force attacks.
+      </p>
+    </div>
+
+    <div class="feature-card bg-zinc-900/60 p-6 rounded-xl border border-zinc-800">
+      <h3 class="text-lg font-semibold mb-3">#🔐 Cryptographic Hash Generator</h3>
+      <p class="text-sm text-zinc-400">
+        Generate MD5, SHA-256, and bcrypt hashes to understand how real systems
+        protect stored credentials.
+      </p>
+    </div>
+
+    <div class="feature-card bg-zinc-900/60 p-6 rounded-xl border border-zinc-800">
+      <h3 class="text-lg font-semibold mb-3">⚡ Abuse-Resistant APIs</h3>
+      <p class="text-sm text-zinc-400">
+        All sensitive operations are protected using rate limiting to prevent
+        brute-force abuse and excessive resource usage.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="text-center mb-12">
+    <h2 class="text-xl font-semibold mb-2">Choose a tool to begin</h2>
+    <p class="text-sm text-zinc-400">
+      Each tool operates independently with a unified design system.
+    </p>
+  </section>
+
+  <!-- TOOL BUTTONS -->
+  <section class="flex flex-col md:flex-row justify-center gap-6 mb-32">
+    <a href="token.html"
+       class="glow pixel-click px-8 py-4 rounded-xl bg-zinc-900 border border-zinc-700 text-lg font-semibold text-center">
+      <span>Password Generator</span>
+    </a>
+
+    <a href="strength.html"
+       class="glow pixel-click px-8 py-4 rounded-xl bg-zinc-900 border border-zinc-700 text-lg font-semibold text-center">
+      <span>Password Strength</span>
+    </a>
+
+    <a href="hash.html"
+       class="glow pixel-click px-8 py-4 rounded-xl bg-zinc-900 border border-zinc-700 text-lg font-semibold text-center">
+      <span>#🔐 Hash Generator</span>
+    </a>
+  </section>
+
+  <!-- INFORMATIVE / STORY SECTION (ALIVE, NOT DRY) -->
+  <section class="max-w-6xl mx-auto mb-32 px-4">
+    <h2 class="text-3xl font-bold text-center mb-12">
+      Why These Security Tools Matter
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <div class="bg-zinc-900/50 p-6 rounded-xl border border-zinc-800 hover:border-cyan-400 transition">
+        <h3 class="text-lg font-semibold mb-3">🔓 Weak Passwords</h3>
+        <p class="text-sm text-zinc-400">
+          Password reuse and short credentials remain the leading causes of
+          account compromise. Length and randomness directly impact security.
+        </p>
+      </div>
+
+      <div class="bg-zinc-900/50 p-6 rounded-xl border border-zinc-800 hover:border-purple-400 transition">
+        <h3 class="text-lg font-semibold mb-3">⏱️ Crack-Time Reality</h3>
+        <p class="text-sm text-zinc-400">
+          A password is only as strong as the time it takes to break. Crack-time
+          estimation reveals what “strong” really means.
+        </p>
+      </div>
+
+      <div class="bg-zinc-900/50 p-6 rounded-xl border border-zinc-800 hover:border-pink-400 transition">
+        <h3 class="text-lg font-semibold mb-3">🧂 Secure Storage</h3>
+        <p class="text-sm text-zinc-400">
+          Modern systems never store passwords directly. Hashing with salts and
+          slow algorithms protects users even after data breaches.
+        </p>
+      </div>
+
+    </div>
+
+    <p class="text-center text-sm text-zinc-500 mt-12 max-w-3xl mx-auto">
+      This platform bridges the gap between textbook security concepts and how
+      authentication systems are implemented in real applications.
+    </p>
+  </section>
+
+  <!-- FAQ -->
+  <section class="max-w-4xl mx-auto mb-32">
+    <h2 class="text-2xl font-bold mb-10 text-center">
+      Frequently Asked Questions
+    </h2>
+
+    <div class="space-y-6 text-sm text-zinc-300">
+
+      <details class="bg-zinc-900/60 p-5 rounded-xl border border-zinc-800">
+        <summary class="font-semibold">
+          Is this meant for real-world usage?
+        </summary>
+        <p class="mt-3 text-zinc-400">
+          This platform is designed for learning and security awareness. While it
+          follows best practices, production systems require additional layers
+          of monitoring and auditing.
+        </p>
+      </details>
+
+      <details class="bg-zinc-900/60 p-5 rounded-xl border border-zinc-800">
+        <summary class="font-semibold">
+          Why is MD5 included if it is insecure?
+        </summary>
+        <p class="mt-3 text-zinc-400">
+          MD5 is included strictly for educational comparison to demonstrate why
+          fast hash functions are unsuitable for password storage.
+        </p>
+      </details>
+
+      <details class="bg-zinc-900/60 p-5 rounded-xl border border-zinc-800">
+        <summary class="font-semibold">
+          Why do strong passwords show extremely large crack times?
+        </summary>
+        <p class="mt-3 text-zinc-400">
+          Crack-time estimates assume offline attacks with modern hardware.
+          High-entropy passwords can realistically take millions of years to
+          brute-force.
+        </p>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="text-center text-sm text-zinc-500 pb-10">
+    Security Utilities Platform — engineered with security-first principles.
+  </footer>
+
+</body>
+</html>

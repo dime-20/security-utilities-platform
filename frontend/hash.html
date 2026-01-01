@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hash Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background: radial-gradient(circle at top, #0f172a, #020617);
+    }
+  </style>
+</head>
+
+<body class="text-white min-h-screen flex items-center justify-center px-6">
+
+  <div class="w-full max-w-xl bg-zinc-900/70 p-6 rounded-xl border border-zinc-800">
+
+    <h1 class="text-2xl font-bold mb-6 text-center">
+      #🔐 Cryptographic Hash Generator
+    </h1>
+
+    <input
+      type="text"
+      id="inputText"
+      placeholder="Enter text"
+      class="w-full p-2 mb-4 rounded bg-zinc-800 text-white"
+    />
+
+    <select
+      id="algorithm"
+      class="w-full p-2 mb-4 rounded bg-zinc-800 text-white"
+    >
+      <option value="md5">MD5</option>
+      <option value="sha256">SHA-256</option>
+      <option value="bcrypt">bcrypt</option>
+    </select>
+
+    <button
+      onclick="generateHash()"
+      class="w-full py-2 mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 rounded font-semibold hover:opacity-90"
+    >
+      Generate Hash
+    </button>
+
+    <pre
+      id="output"
+      class="p-3 bg-zinc-800 rounded text-sm break-all text-center"
+    ></pre>
+
+    <!-- NAVIGATION -->
+    <div class="mt-6 flex flex-col md:flex-row gap-4 justify-center text-sm">
+
+      <a href="token.html"
+         class="px-4 py-2 rounded bg-zinc-800 hover:bg-zinc-700 text-center">
+        ← Password Generator
+      </a>
+
+      <a href="strength.html"
+         class="px-4 py-2 rounded bg-zinc-800 hover:bg-zinc-700 text-center">
+        → Password Strength
+      </a>
+
+      <a href="index.html"
+         class="px-4 py-2 rounded bg-zinc-800 hover:bg-zinc-700 text-center">
+        ⌂ Home
+      </a>
+
+    </div>
+  </div>
+
+  <script>
+    async function generateHash() {
+      const text = document.getElementById("inputText").value;
+      const algorithm = document.getElementById("algorithm").value;
+      const output = document.getElementById("output");
+
+      if (!text) {
+        output.textContent = "Please enter text.";
+        return;
+      }
+
+      output.textContent = "Generating...";
+
+      try {
+        const res = await fetch("http://127.0.0.1:5000/api/hash", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text, algorithm })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          output.textContent = data.error || "Error";
+          return;
+        }
+
+        output.textContent = data.hash;
+
+      } catch (err) {
+        output.textContent = "Backend not reachable";
+      }
+    }
+  </script>
+
+</body>
+</html>

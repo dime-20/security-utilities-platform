@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Password Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background: radial-gradient(circle at top, #0f172a, #020617);
+    }
+  </style>
+</head>
+
+<body class="text-white min-h-screen flex items-center justify-center px-6">
+
+<div class="w-full max-w-xl bg-zinc-900/70 p-6 rounded-xl border border-zinc-800">
+
+  <h1 class="text-2xl font-bold mb-6 text-center">🔐 Password Generator</h1>
+
+  <label class="block text-sm text-zinc-400 mb-1">Password Length (8–64)</label>
+  <input type="number" id="length" min="8" max="64" value="16"
+         class="w-full p-2 mb-4 rounded bg-zinc-800 text-white" />
+
+  <div class="space-y-2 mb-4 text-sm">
+    <label class="flex items-center gap-2"><input type="checkbox" id="letters" checked /> Letters</label>
+    <label class="flex items-center gap-2"><input type="checkbox" id="digits" checked /> Digits</label>
+    <label class="flex items-center gap-2"><input type="checkbox" id="specials" /> Special Characters</label>
+  </div>
+
+  <button onclick="generatePassword()"
+          class="w-full py-2 mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 rounded font-semibold">
+    Generate Password
+  </button>
+
+  <pre id="output"
+       class="p-3 bg-zinc-800 rounded text-sm break-all text-center"></pre>
+
+  <div class="mt-4 flex gap-3 justify-center text-sm">
+    <button onclick="copyPassword()"
+            class="px-4 py-2 rounded bg-zinc-800 hover:bg-zinc-700">
+      📋 Copy
+    </button>
+
+    <button onclick="goToStrength()"
+            class="px-4 py-2 rounded bg-zinc-800 hover:bg-zinc-700">
+      📊 Check Strength
+    </button>
+  </div>
+
+  <div class="mt-6 flex flex-col md:flex-row gap-4 justify-center text-sm">
+    <a href="strength.html" class="px-4 py-2 rounded bg-zinc-800 hover:bg-zinc-700">→ Password Strength</a>
+    <a href="hash.html" class="px-4 py-2 rounded bg-zinc-800 hover:bg-zinc-700">→ Hash Generator</a>
+    <a href="index.html" class="px-4 py-2 rounded bg-zinc-800 hover:bg-zinc-700">⌂ Home</a>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div id="toast"
+     class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/80 text-white px-4 py-2 rounded opacity-0 transition">
+  Copied!
+</div>
+
+<script>
+async function generatePassword() {
+  const length = Number(document.getElementById("length").value);
+  const letters = document.getElementById("letters").checked;
+  const digits = document.getElementById("digits").checked;
+  const specials = document.getElementById("specials").checked;
+  const output = document.getElementById("output");
+
+  if (!letters && !digits && !specials) {
+    output.textContent = "Select at least one character set.";
+    return;
+  }
+
+  let charset = [];
+  if (letters) charset.push("letters");
+  if (digits) charset.push("digits");
+  if (specials) charset.push("specials");
+
+  const res = await fetch("http://127.0.0.1:5000/api/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ length, charset: charset.join(",") })
+  });
+
+  const data = await res.json();
+  output.textContent = res.ok ? data.token : data.error;
+}
+
+function copyPassword() {
+  const text = document.getElementById("output").textContent;
+  if (!text) return;
+
+  navigator.clipboard.writeText(text);
+  const toast = document.getElementById("toast");
+  toast.classList.remove("opacity-0");
+  setTimeout(() => toast.classList.add("opacity-0"), 1200);
+}
+
+function goToStrength() {
+  const text = document.getElementById("output").textContent;
+  if (!text) return;
+  sessionStorage.setItem("passwordToCheck", text);
+  window.location.href = "strength.html";
+}
+</script>
+
+</body>
+</html>
