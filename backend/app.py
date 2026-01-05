@@ -15,7 +15,8 @@ from utils.password_strength import (
 print("### SECURITY SUITE BACKEND LOADED ###")
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+
 
 # -----------------------------
 # RATE LIMITER
@@ -29,7 +30,7 @@ limiter = Limiter(
 # -----------------------------
 # PASSWORD GENERATOR (FORMER TOKEN GENERATOR)
 # -----------------------------
-@app.route("/api/token", methods=["POST"])
+@app.route("/api/token", methods=["POST", "OPTIONS"])
 @limiter.limit("10 per minute")
 def token_api():
     data = request.get_json(silent=True) or {}
@@ -59,7 +60,7 @@ def token_api():
 # --------------------------------
 # PASSWORD STRENGTH CHECKER
 # --------------------------------
-@app.route("/api/password-strength", methods=["POST"])
+@app.route("/api/password-strength", methods=["POST", "OPTIONS"])
 def password_strength_api():
     data = request.get_json(silent=True) or {}
     password = data.get("password", "")
@@ -81,7 +82,7 @@ def password_strength_api():
 # -----------------------------
 # HASH GENERATOR
 # -----------------------------
-@app.route("/api/hash", methods=["POST"])
+@app.route("/api/hash", methods=["POST", "OPTIONS"])
 @limiter.limit("5 per minute")
 def generate_hash():
     data = request.get_json(silent=True) or {}
